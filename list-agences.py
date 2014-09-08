@@ -13,15 +13,15 @@ G = GeoCoder(75)
 n0 = 0
 n1 = 0
 cururl = seloger_url
-print >> sys.stdout, "Nom,Adresse,Code Postal,Téléphone,lat,lon"
+print >> sys.stdout, "Nom,Adresse,Téléphone,Code Postal,lat,lon"
 while cururl:
     doc = html.fromstring(urllib.urlopen(cururl).read().decode("utf8"))
 
     annonces = doc.find_class("listing")
     for annonce in annonces:
         n0 += 1
-
         title = annonce.xpath("div/h2")[0].text_content().encode("utf-8").strip("\n\t \r")
+
         adress = annonce.xpath("div/p[@class='adress']")[0].text_content().encode("utf-8").strip("\n\t\r ").replace("\r\n", " ")
         adress = adress.replace("avenue montagne", "avenue montaigne")
         adress = adress.replace("poissoniere", "poissonniere")
@@ -51,16 +51,18 @@ while cururl:
         adress = adress.replace("h. barbus", "henri barbus")
         adress = adress.replace("dela paix", "de la paix")
         adress = adress.replace("froy dabbans", "froy d'abbans")
+
         try:
             tel = annonce.xpath("div/button[@class='agency_phone']/@data-phone")[0]
         except:
             tel = ""
+
         try:
-            lat, lon = G.geocode(adress)
-            print >> sys.stdout, '%s\t%s\t%s\t%s\t%s' % (title, adress, tel, lat, lon)
+            cp, lat, lon = G.geocode(adress, return_postcode=True)
+            print >> sys.stdout, '%s\t%s\t%s\t%s\t%s\t%s' % (title, adress, tel, cp, lat, lon)
             n1 += 1
         except TypeError:
-            pass
+            print >> sys.stdout, '%s\t%s\t%s\t\t\t' % (title, adress, tel)
             print >> sys.stderr, "[WARNING] NO GPS found for agence", title, ":", adress
 
     nexturl = doc.find_class("pagination_next")

@@ -56,7 +56,7 @@ class GeoCoder(object):
             self.adresses["75116"] = self.adresses["75016"]
         self.loaded.append(dept)
 
-    def geocode(self, adress, postcode=None):
+    def geocode(self, adress, postcode=None, return_postcode=False):
 
       # Look for postcode in adress if not provided in input
         if not postcode:
@@ -68,9 +68,9 @@ class GeoCoder(object):
 
       # Look for street number in adress
         number, street = split_number(adress)
-        return self.find_street(postcode, street, number)
+        return self.find_street(postcode, street, number, return_postcode=return_postcode)
 
-    def find_street(self, postcode, street, number=""):
+    def find_street(self, postcode, street, number="", return_postcode=False):
 
       # Identify department from postcode and load bano data if needed
         postcode = clean_blanks(str(postcode))
@@ -107,16 +107,18 @@ class GeoCoder(object):
                     sys.stderr.write('[ERROR] Could not find a street "%s" with postcode %s in bano data\n' % (street, postcode))
                 return
 
+        postcode = (int(postcode),) if return_postcode else ()
+
       # Return coordinates for the center of the street if no number
         digits = [(digitize(k), k) for k in adresses.keys()]
         number = clear_blanks(str(number))
         if not number:
             _, key = sorted(digits)[len(digits)/2]
-            return adresses[key]
+            return postcode + adresses[key]
 
       # Return coordinates of matched adress
         if number in adresses:
-            return adresses[number]
+            return postcode + adresses[number]
 
       # Return coordinates of closest number in the street with same side priority
         number = digitize(number)
@@ -127,7 +129,7 @@ class GeoCoder(object):
             _,key = min(dig_impa)
         else:
             _,key = min(dig_pair)
-        return adresses[key]
+        return postcode + adresses[key]
 
 
 re_digit = re.compile(r"\D")
