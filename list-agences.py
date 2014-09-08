@@ -13,7 +13,7 @@ G = GeoCoder(75)
 n0 = 0
 n1 = 0
 cururl = seloger_url
-print >> sys.stdout, "Nom,Adresse,Téléphone,Code Postal,lat,lon"
+print >> sys.stdout, "Nom\tAdresse\tTéléphone\tCode Postal\tlat\tlon"
 while cururl:
     doc = html.fromstring(urllib.urlopen(cururl).read().decode("utf8"))
 
