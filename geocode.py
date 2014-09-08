@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import os, sys, csv, re, requests
+import os, sys, re, requests
 if not os.path.exists(".cache"):
     os.makedirs(".cache")
 
