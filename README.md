@@ -6,10 +6,11 @@ Toutes les agences immobilières parisiennes de SeLoger.com geocodées via BANO
 Données consultables ici : [https://github.com/RouxRC/map-immo/blob/master/agences.tsv](https://github.com/RouxRC/map-immo/blob/master/agences.tsv)
 Et visualisées grâce à uMap ici : [https://umap.openstreetmap.fr/fr/map/map-immo-paris_16133](https://umap.openstreetmap.fr/fr/map/map-immo-paris_16133)
 
-Ce code est publié sous licence GPL v3 et les données sous [http://www.vvlibri.org/fr/licence/odbl/10/fr/legalcode](licence ODBL). Elles ont été scrappées sur [http://www.seloger.com](SeLoger.com) et géolocalisées grâce à Bano d'OpenStreetmap.
+Ce code est publié sous licence GPL v3 et les données sous [http://www.vvlibri.org/fr/licence/odbl/10/fr/legalcode](licence ODBL). Elles ont été scrappées sur [http://www.seloger.com](SeLoger.com) et géolocalisées grâce à [https://github.com/osm-fr/bano-data/](Bano d'OpenStreetMap).
 
-Le geocoder python employé est réutilisable en utilisant simplement le fichier `geocode.py`.
-Par exemple:
+Le geocoder python employé est réutilisable en utilisant simplement le fichier `geocode.py` sans rien de plus. les données bano requises sont téléchargées à la volées et cachées dans un dossier `.cache`.
+
+Par exemple :
 
 ```python
 # import the GeoCoder class
