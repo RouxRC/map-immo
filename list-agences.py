@@ -24,6 +24,12 @@ while cururl:
         title = annonce.xpath("div/h2")[0].text_content().encode("utf-8").strip("\n\t \r")
         adress = annonce.xpath("div/p[@class='adress']")[0].text_content().encode("utf-8").strip("\n\t\r ").replace("\r\n", " ")
         adress = adress.replace("avenue montagne", "avenue montaigne")
+        adress = adress.replace("poissoniere", "poissonniere")
+        adress = adress.replace("de wagran", "de wagram")
+        adress = adress.replace("lazarre", "lazare")
+        adress = adress.replace("vielle", "vieille")
+        adress = adress.replace("grenetta", "greneta")
+        adress = adress.replace("bobiillot", "bobillot")
         try:
             tel = annonce.xpath("div/button[@class='agency_phone']/@data-phone")[0]
         except:

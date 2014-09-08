@@ -150,7 +150,7 @@ def split_postcode(adress):
     res = re_postcode.search(adress)
     return res.group(2), res.group(1)
 
-re_number = re.compile(r"^\D*(\d+)(?:[ -/]+\d+)?(\s*(?:b|t|q|(?:bis|ter|qua)+) )?(.*)$")
+re_number = re.compile(r"^\D*(\d+)(?:[ -/]+\d+)?(\s*(?:b[ is]*|t|q|(?:ter|qua)+) )?(.*)$")
 def split_number(adress):
     adress = clean_blanks(adress)
     if not re_number.match(adress):
@@ -174,13 +174,14 @@ re_fbg = re.compile(r'(^| )f[auxborg]* ')
 re_plc = re.compile(r'(^| )pl[ace]* ')
 re_squ = re.compile(r'(^| )sq[uare]* ')
 re_lot = re.compile(r'(^| )lot[isment]* ')
-re_rdp = re.compile(r'(^| )r[ond\- ]*p[oint]* ')
+re_rdp = re.compile(r'(^| )r[ondt\- ]*p[oint]* ')
 re_ave = re.compile(r'(^| )ave? ')
 re_ale = re.compile(r'(^| )al+ ')
 re_st  = re.compile(r'(^| )st[- ]+')
 re_ss  = re.compile(r' (ss|/s) ')
 re_sur = re.compile(r' (sr|s/) ')
-re_de  = re.compile(r" d((e l)?[' ]|[eu]( la|s)? )")
+re_de  = re.compile(r" d((e l)?[' ]|[eu]( ?la|s)? )")
+re_cln = re.compile(r" (immeuble|building|batiment|porte|b ?p|boite postale|cedex|code postal|tsa|cs|paris|\d+)+ .*$")
 re_all = re.compile(r'\W')
 def hash_adress(s):
     s = clean_blanks(s)
@@ -206,6 +207,8 @@ def hash_adress(s):
     s = re_sur.sub("sur ", s)
     s = re_de.sub(" ", s)
     s = s.replace(" dr ", " docteur ")
+    s = s.replace(" doct ", " docteur ")
     s = s.replace(" gen ", " general ")
+    s = re_cln.sub(" ", s)
     return re_all.sub("", s)
 
